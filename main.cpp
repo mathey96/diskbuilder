@@ -1,3 +1,4 @@
+#include <unordered_map>
 #include <iostream>
 #include <vector>
 #include <iomanip>
@@ -15,7 +16,22 @@ struct disk{
 	bool operator<(const disk& other) const {
 		return name < other.name;  // Or any other criteria for elite
     }
+    bool operator==(const disk& other) const {
+        return name == other.name && size == other.size;
+    }
 };
+
+namespace std {
+    template <>
+    struct hash<disk> {
+        size_t operator()(const disk& d) const {
+            size_t h1 = std::hash<std::string>{}(d.name);  // Hash for name
+            size_t h2 = std::hash<char>{}(d.size);          // Hash for size
+            return h1 ^ (h2 << 1); // Combine the two hashes using XOR
+        }
+    };
+}
+
 
 struct general {
 	std::string name;
@@ -72,54 +88,55 @@ vector<vector<disk>> diskCombinations(const vector<disk>& disks, int amount) {
     vector<vector<disk>> result;
     vector<disk> currentCombination;
 
-    // Sort disks to avoid duplicate combinations in the output
-    // sort(disks.begin(), disks.end());
-
     // Start the recursive search
     findCombinations(disks, amount, currentCombination, result, 0);
 
     return result;
 }
 
+
+/* constraints of the regiments are following:
+1. no regiments with multiple elite disks
+2. There cannot be more than 3 copies of a small disk, 2 copies of a
+medium disk, and 1 copy of a large disk per regiment.
+3. count of large + medium disks <= count of small disks
+*/
+
 vector<vector<disk>> ValidDiskCombinations(const vector<disk>& disks, int amount){
 	auto AllCombinations = diskCombinations(disks, amount); // all mathematically possible combinations of disks that amount to general's command value
 	for (auto combination = AllCombinations.begin(); combination != AllCombinations.end();){
 		int num_of_elite = 0, num_small = 0, num_medium = 0, num_large = 0;
 		std::set<disk> unique_disks;
+		std::unordered_map<disk, int> disk_count;
 		for(auto& disk: *combination){ // check if unique
 			if(disk.elite == elite) num_of_elite ++;
 			if(disk.size == 'S') num_small++;
 			if(disk.size == 'M') num_medium++;
 			if(disk.size == 'L') num_large++;
             unique_disks.insert(disk);
+			disk_count[disk]++;  // Increment the number of the same disk in one combination
 		}
 
+		for (const auto& entry : disk_count) { // copy restriction  check
+			if( entry.first.size == 'L' && entry.second > 1
+			|| ( entry.first.size == 'M' && entry.second > 2)
+			|| ( entry.first.size == 'S' && entry.second > 3)){
+				goto erase_thiscombo;
+			}
+		 }
 
-		std::for_each(unique_disks.begin(), unique_disks.end(), [](const disk& d) {
-				std::cout << d.name << " ";
-		});
-		std::cout<<endl;
-
-		// IMPLEMENT:
-		// we run twice over the same combination to check if there are more than max number of disks available to player
-		// if there are, discard that combination
-
-		/* constraints of the regiments are following:
-		1. no regiments with multiple elite disks
-		There cannot be more than 3 copies of a small disk, 2 copies of a
-		medium disk, and 1 copy of a large disk per regiment.
-	    */
         if (num_of_elite > 1 || (num_small < num_medium + num_large) ) {
+			erase_thiscombo:
             combination = AllCombinations.erase(combination);  // Erase and get the new iterator
         } else {
             ++combination;
         }
-		// cout<< "kraj kombinacije\n\n";
 	}
 	return AllCombinations;
+	}
 
-}
 void printCombinationsTable(vector<vector<disk>> combinations){
+	cout <<  endl;
      for (const auto& combination : combinations) {
          for (disk disk : combination) {
              std::cout << "|" << setw(15) << disk.name << "[" << setw(2) << disk.command_value <<"] " <<  left;
