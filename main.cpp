@@ -207,12 +207,13 @@ void printCombinationsTable(vector<vector<disk>> combinations){
 
 void PrettyPrintCombinationsTable(vector<vector<disk>> combinations){
 	cout <<  endl;
+	std::cout<<"| Max \n|disks|"<<endl;
     for (const auto& combination : combinations) {
 		std::unordered_map<disk, int> disk_count;
         for (disk disk : combination) { // fill up the map
 			disk_count[disk]++;
         }
-		std::cout<< "| ";
+		std::cout<< "|  " << combination.size() << " | ";
 		for (const auto& disk : disk_count) { // copy restriction  check
             std::cout <<  disk.second << "x " << std::setw(25) << std::left << disk.first.name << " | ";
 		}
@@ -259,7 +260,7 @@ int main(int argc, char* argv[]){
 
     vector<vector<disk>> combinations;
 	cout << "this is the size of all combinations:" << combinations.size() << endl;
-	combinations = ValidDiskCombinations(*chosen_deck,33);
+	combinations = ValidDiskCombinations(*chosen_deck,deck_size);
 	// printCombinationsTable(combinations);
 	PrettyPrintCombinationsTable(combinations);
 
