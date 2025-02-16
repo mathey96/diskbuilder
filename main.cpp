@@ -1,10 +1,19 @@
-#include <unordered_map>
 #include <iostream>
 #include <vector>
 #include <iomanip>
 #include <string.h>
 #include <algorithm>
+#include <unordered_map>
 #include <set>
+#ifdef EMSCRIPTENBUILD
+#include <emscripten/emscripten.h>
+#endif
+
+#ifdef __cplusplus
+#define EXTERN extern "C"
+#else
+#define EXTERN
+#endif
 
 struct disk {
 	std::string name;
@@ -123,6 +132,27 @@ const std::vector<disk> dwarves_deck = { // vc one standard set deck
 	{"Venerable Runesmith"		,6		,'S'	,nonelite	,3}
 };
 
+const std::vector<disk> lizardmen_deck = {
+    {"Salamander", 9, 'M', nonelite, 2},
+    {"Skink Skirmishers", 8, 'S', nonelite, 3}
+};
+
+const std::vector<disk> wood_deck = {
+    {"Athel Loren Dryads", 7, 'S', nonelite, 3},
+    {"Wardancers", 9, 'S', nonelite, 3}
+};
+
+const std::vector<disk> darkelves_deck = {
+    {"Black Ark Corsairs", 6, 'S', nonelite, 3},
+    {"Karond Kar Harpies", 7, 'S', nonelite, 3}
+};
+
+const std::vector<disk> skaven_deck = {
+    {"Ratling Gun", 9, 'M', nonelite, 2},
+    {"Gutter Runners", 7, 'S', nonelite, 3}
+};
+
+
 using namespace std;
 
 void findCombinations(const vector<disk>& disks, int amount, vector<disk>& currentCombination, vector<vector<disk>>& result, int startIndex) {
@@ -223,19 +253,32 @@ void PrettyPrintCombinationsTable(vector<vector<disk>> combinations){
  }
 
 
+#ifdef EMSCRIPTENBUILD
+EXTERN EMSCRIPTEN_KEEPALIVE
+#endif
 void help(){
 	cout<<"Run like this: ./diskbuild <army_name> <regiment_size>"<<endl;
 	cout<<"Possible army names are:"<<endl
+#ifndef EMSCRIPTENBUILD
 		<<"    - empire"<<endl
 		<<"    - elves"<<endl
 		<<"    - orcs"<<endl
 		<<"    - chaos"<<endl
 		<<"    - vc (vampire counts)"<<endl
 		<<"    - dwarves"<<endl;
+#endif
+#ifdef EMSCRIPTENBUILD
+		<<"    1 - empire"<<endl
+		<<"    2 - elves"<<endl
+		<<"    3 - orcs"<<endl
+		<<"    4 - chaos"<<endl
+		<<"    5 - vc (vampire counts)"<<endl
+		<<"    6 - dwarves"<<endl;
+#endif
 }
 
 int main(int argc, char* argv[]){
-	if(argv[1]=="--help" || argv[1]=="help" || argv[1] == NULL){
+	if(strcmp(argv[1],"help") || strcmp(argv[1],"help") || argv[1] == NULL){
 		help();
 		exit(-1);
 	}
@@ -266,3 +309,27 @@ int main(int argc, char* argv[]){
 
 	cout << "\nmax number of combinations is: " << combinations.size() << endl;
 }
+
+
+#ifdef EMSCRIPTENBUILD
+EXTERN EMSCRIPTEN_KEEPALIVE
+#endif
+void PrintToBrowser(int deck_size, int race) {
+
+	const std::vector<disk>* chosen_deck;
+    if      (race == 0)  help();
+    else if (race == 1)  chosen_deck = &empire_deck;
+    else if (race == 2)  chosen_deck = &elves_deck;
+    else if (race == 3)  chosen_deck = &orc_deck;
+    else if (race == 4)  chosen_deck = &chaos_deck;
+    else if (race == 5)  chosen_deck = &vc_deck;
+    else if (race == 6)  chosen_deck = &dwarves_deck;
+
+    vector<vector<disk>> combinations;
+	cout << "this is the size of all combinations:" << combinations.size() << endl;
+	combinations = ValidDiskCombinations(*chosen_deck,deck_size);
+	// printCombinationsTable(combinations);
+	PrettyPrintCombinationsTable(combinations);
+
+}
+
