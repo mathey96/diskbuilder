@@ -1,3 +1,3 @@
 #!/bin/sh
 
-g++ main.cpp
+g++ main.cpp -o main

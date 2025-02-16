@@ -278,19 +278,28 @@ void help(){
 }
 
 int main(int argc, char* argv[]){
-	if(strcmp(argv[1],"help") || strcmp(argv[1],"help") || argv[1] == NULL){
+
+	if(argv[1] == NULL || argv[2] == NULL){
+		cout << "no arguments provided";
+		return -1;
+	}
+	if((strcmp(argv[1],"help") == 0) || (strcmp(argv[1],"--help") == 0) ){
 		help();
-		exit(-1);
+		return -1;
 	}
 	char* deck_type = argv[1];
 
 	const std::vector<disk>* chosen_deck;
-    if (strcmp(deck_type,"empire") == 0)       chosen_deck = &empire_deck;
+    if      (strcmp(deck_type,"empire") == 0)  chosen_deck = &empire_deck;
     else if (strcmp(deck_type, "elves") == 0)  chosen_deck = &elves_deck;
-    else if (strcmp(deck_type, "orcs") == 0)   chosen_deck = &orc_deck;
+    else if (strcmp(deck_type, "orcs")  == 0)  chosen_deck = &orc_deck;
     else if (strcmp(deck_type, "chaos") == 0)  chosen_deck = &chaos_deck;
-    else if (strcmp(deck_type, "vc") == 0)     chosen_deck = &vc_deck;
+    else if (strcmp(deck_type, "vc")    == 0)  chosen_deck = &vc_deck;
     else if (strcmp(deck_type, "dwarves") == 0)chosen_deck = &dwarves_deck;
+	else{
+		cout<<"invalid race"<<endl;
+		return -1;
+	}
 
 	// if(argv[1] == "empire") chosen_deck		= empire_deck;
 	// if(argv[1] == "elves")  chosen_deck		= elves_deck;
@@ -330,6 +339,5 @@ void PrintToBrowser(int deck_size, int race) {
 	combinations = ValidDiskCombinations(*chosen_deck,deck_size);
 	// printCombinationsTable(combinations);
 	PrettyPrintCombinationsTable(combinations);
-
 }
 
