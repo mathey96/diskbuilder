@@ -10,8 +10,11 @@ struct disk{
 	std::string name;
 	int command_value;
 	char size;
-	int uniqueness;
+	int elite;
 	int num_of_disks;
+	bool operator<(const disk& other) const {
+		return name < other.name;  // Or any other criteria for elite
+    }
 };
 
 struct general {
@@ -26,20 +29,20 @@ general generals[] = {
 };
 
 enum{
-	uniquedisk = 0,
-	nonunique
+	elite = 0,
+	nonelite
 };
 
 const std::vector<disk> vc_deck = { // vc one standard set deck
-    { "black knights"   ,11   ,'M',nonunique, 2},
-    { "banshee"         ,7    ,'S',nonunique, 3},
-    { "necromancers"    ,7    ,'S',nonunique, 3},
-    { "zombie dragon"   ,14   ,'L',uniquedisk, 1},
-    { "grave guard"     ,8    ,'S',nonunique, 3},
-    { "vargheist"       ,9    ,'M',nonunique, 2},
-    { "black coach"     ,12   ,'M',uniquedisk, 2},
-    { "skeleton"        ,4    ,'S',nonunique, 3},
-    { "dire wolves"     ,6    ,'S',nonunique, 3}
+    { "Black knights"   ,11   ,'M',nonelite, 2},
+    { "Banshee"         ,7    ,'S',nonelite, 3},
+    { "Necromancers"    ,7    ,'S',nonelite, 3},
+    { "Zombie dragon"   ,14   ,'L',elite, 1},
+    { "Grave guard"     ,8    ,'S',nonelite, 3},
+    { "Vargheist"       ,9    ,'M',nonelite, 2},
+    { "Black coach"     ,12   ,'M',elite, 2},
+    { "Skeleton"        ,4    ,'S',nonelite, 3},
+    { "Dire wolves"     ,6    ,'S',nonelite, 3}
 };
 
 using namespace std;
@@ -81,19 +84,32 @@ vector<vector<disk>> diskCombinations(const vector<disk>& disks, int amount) {
 vector<vector<disk>> ValidDiskCombinations(const vector<disk>& disks, int amount){
 	auto AllCombinations = diskCombinations(disks, amount); // all mathematically possible combinations of disks that amount to general's command value
 	for (auto combination = AllCombinations.begin(); combination != AllCombinations.end();){
-		int num_of_uniq = 0, num_small = 0, num_medium = 0, num_large = 0;
+		int num_of_elite = 0, num_small = 0, num_medium = 0, num_large = 0;
+		std::set<disk> unique_disks;
 		for(auto& disk: *combination){ // check if unique
-			if(disk.uniqueness == uniquedisk) num_of_uniq ++;
+			if(disk.elite == elite) num_of_elite ++;
 			if(disk.size == 'S') num_small++;
 			if(disk.size == 'M') num_medium++;
 			if(disk.size == 'L') num_large++;
+            unique_disks.insert(disk);
 		}
+
+
+		std::for_each(unique_disks.begin(), unique_disks.end(), [](const disk& d) {
+				std::cout << d.name << " ";
+		});
+		std::cout<<endl;
+
 		// IMPLEMENT:
 		// we run twice over the same combination to check if there are more than max number of disks available to player
 		// if there are, discard that combination
 
-		// delete combinations with multiple unique disks - 1st constraint of the game
-        if (num_of_uniq > 1 || (num_small < num_medium + num_large)) {
+		/* constraints of the regiments are following:
+		1. no regiments with multiple elite disks
+		There cannot be more than 3 copies of a small disk, 2 copies of a
+		medium disk, and 1 copy of a large disk per regiment.
+	    */
+        if (num_of_elite > 1 || (num_small < num_medium + num_large) ) {
             combination = AllCombinations.erase(combination);  // Erase and get the new iterator
         } else {
             ++combination;
