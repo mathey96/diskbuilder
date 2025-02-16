@@ -2,12 +2,11 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <string.h>
 #include <algorithm>
 #include <set>
 
-#define NUM_OF_DISKS 9
-
-struct disk{
+struct disk {
 	std::string name;
 	int command_value;
 	char size;
@@ -38,27 +37,90 @@ struct general {
 	int command_value;
 };
 
-general generals[] = {
-	{"mannfred", 31},
-	{"isabella", 33},
-	{"heinrich", 34}
-};
-
 enum{
 	elite = 0,
 	nonelite
 };
 
+const std::vector<disk> empire_deck = { // vc one standard set deck
+    {"Steam Tank"               ,13    ,'L'   ,elite     ,1},
+    {"Hellblaster Volley Gun"   ,10    ,'L'   ,elite     ,1},
+    {"Hochland Pistoliers"      ,9     ,'M'   ,nonelite  ,1},
+    {"Knights Panther"          ,10    ,'M'   ,nonelite  ,1},
+    {"Warrior Priests"          ,9     ,'M'   ,nonelite  ,2},
+    {"Bright Wizard"            ,7     ,'S'   ,nonelite  ,1},
+    {"Huntsmen"                 ,8     ,'S'   ,nonelite  ,1},
+    {"Marienburg Swordsmen"     ,5     ,'S'   ,nonelite  ,3},
+    {"Reikland Crossbowmen"     ,7     ,'S'   ,nonelite  ,2},
+    {"Talabecland Halberdiers"  ,5     ,'S'   ,nonelite  ,3},
+    {"Talabheim Greatswords"    ,8     ,'S'   ,nonelite  ,1}
+};
+
+const std::vector<disk> elves_deck = { // vc one standard set deck
+    {"Bolt Thrower"				,10 ,'L'	,elite		,1},
+    {"Sun Dragon"				,15 ,'L'	,elite		,1},
+    {"Ellyrian Reavers"			,9  ,'M'	,nonelite	,1},
+    {"Silver Helms"				,12 ,'M'	,nonelite	,2},
+    {"Sky Cutter"				,11 ,'M'	,elite		,1},
+    {"High Mage"				,7  ,'S'	,nonelite	,1},
+    {"Lothern Sea Guard"		,5  ,'S'	,nonelite	,3},
+    {"Maiden Guard"				,9  ,'S'	,nonelite	,1},
+    {"Militia Archers"			,6  ,'S'	,nonelite	,2},
+    {"Militia Spearmen"			,6  ,'S'	,nonelite	,2},
+    {"Swordmasters of Hoeth"	,9  ,'S'	,nonelite	,2}
+};
+const std::vector<disk> chaos_deck = { // vc one standard set deck
+	{"Bloodthirster"		,15	    ,'L'	,elite		,1},
+	{"Hellcannon"			,12	    ,'L'	,elite		,1},
+	{"Bloodcrushers"		,10	    ,'M'	,nonelite	,1},
+	{"Hellstriders"			,8		,'M'	,nonelite	,1},
+	{"Screamers"			,7		,'M'	,nonelite	,2},
+	{"Deamonettes"			,6		,'S'	,nonelite	,3},
+	{"Flamers"				,8		,'S'	,nonelite	,3},
+	{"Kurgan Marauders"		,5		,'S'	,nonelite	,3},
+	{"Plaguebearers"		,8		,'S'	,nonelite	,1},
+	{"Sorcerer of Tzeentch"	,7		,'S'	,nonelite	,1}
+};
+
+
+const std::vector<disk> orc_deck = { // vc one standard set deck
+	{"Rock Lobber"		   ,9  ,'L' ,elite	  ,1},
+	{"Boar Boys"		   ,11 ,'M' ,nonelite ,1},
+	{"Doom Diver Catapult" ,5  ,'M' ,nonelite ,2},
+	{"River Troll"		   ,12 ,'M' ,elite	  ,1},
+	{"Wolf Riders"		   ,8  ,'M' ,nonelite ,2},
+	{"Arrer Boyz"		   ,6  ,'S' ,nonelite ,2},
+	{"Big Boss"			   ,8  ,'S' ,nonelite ,1},
+	{"Black Orcs"		   ,8  ,'S' ,nonelite ,1},
+	{"Goblin Doom Diver"   ,4  ,'S' ,nonelite ,3},
+	{"Night Goblins"	   ,4  ,'S' ,nonelite ,3},
+	{"Orc Boyz"			   ,6  ,'S' ,nonelite ,3},
+	{"Stone Fangz Shaman"  ,7  ,'S' ,nonelite ,7}
+};
+
 const std::vector<disk> vc_deck = { // vc one standard set deck
-    { "Black knights"   ,11   ,'M',nonelite, 2},
-    { "Banshee"         ,7    ,'S',nonelite, 3},
-    { "Necromancers"    ,7    ,'S',nonelite, 3},
-    { "Zombie dragon"   ,14   ,'L',elite, 1},
-    { "Grave guard"     ,8    ,'S',nonelite, 3},
-    { "Vargheist"       ,9    ,'M',nonelite, 2},
-    { "Black coach"     ,12   ,'M',elite, 2},
-    { "Skeleton"        ,4    ,'S',nonelite, 3},
-    { "Dire wolves"     ,6    ,'S',nonelite, 3}
+    { "Black knights"   ,11   ,'M', nonelite, 2},
+    { "Banshee"         ,7    ,'S', nonelite, 3},
+    { "Necromancers"    ,7    ,'S', nonelite, 3},
+    { "Zombie dragon"   ,14   ,'L', elite,    1},
+    { "Grave guard"     ,8    ,'S', nonelite, 3},
+    { "Vargheist"       ,9    ,'M', nonelite, 2},
+    { "Black coach"     ,12   ,'M', elite,    2},
+    { "Skeleton"        ,4    ,'S', nonelite, 3},
+    { "Dire wolves"     ,6    ,'S', nonelite, 3}
+};
+
+const std::vector<disk> dwarves_deck = { // vc one standard set deck
+	{"Flame Cannon"				,9		,'L'	,nonelite	,1}	,
+	{"Runic Cannon"				,12	    ,'L'	,elite		,1}	,
+	{"Ancestor Statue"			,7		,'M'	,nonelite	,2}	,
+	{"Gyrocopter"				,12	    ,'M'	,elite		,2}	,
+	{"Karak Azul Warriors"		,6		,'S'	,nonelite	,3}	,
+	{"Karak Hirn Miners"		,7		,'S'	,nonelite	,3}	,
+	{"Karaz-a-Karak Hammerers"	,8		,'S'	,nonelite	,3}	,
+	{"Karaz-a-Karak Thunderers"	,8		,'S'	,nonelite	,3}	,
+	{"Master Engineer"			,8		,'S'	,nonelite	,3}	,
+	{"Venerable Runesmith"		,6		,'S'	,nonelite	,3}
 };
 
 using namespace std;
@@ -94,7 +156,6 @@ vector<vector<disk>> diskCombinations(const vector<disk>& disks, int amount) {
     return result;
 }
 
-
 /* constraints of the regiments are following:
 1. no regiments with multiple elite disks
 2. There cannot be more than 3 copies of a small disk, 2 copies of a
@@ -106,21 +167,19 @@ vector<vector<disk>> ValidDiskCombinations(const vector<disk>& disks, int amount
 	auto AllCombinations = diskCombinations(disks, amount); // all mathematically possible combinations of disks that amount to general's command value
 	for (auto combination = AllCombinations.begin(); combination != AllCombinations.end();){
 		int num_of_elite = 0, num_small = 0, num_medium = 0, num_large = 0;
-		std::set<disk> unique_disks;
 		std::unordered_map<disk, int> disk_count;
 		for(auto& disk: *combination){ // check if unique
 			if(disk.elite == elite) num_of_elite ++;
 			if(disk.size == 'S') num_small++;
 			if(disk.size == 'M') num_medium++;
 			if(disk.size == 'L') num_large++;
-            unique_disks.insert(disk);
 			disk_count[disk]++;  // Increment the number of the same disk in one combination
 		}
 
-		for (const auto& entry : disk_count) { // copy restriction  check
-			if( entry.first.size == 'L' && entry.second > 1
-			|| ( entry.first.size == 'M' && entry.second > 2)
-			|| ( entry.first.size == 'S' && entry.second > 3)){
+		for (const auto& disk : disk_count) { // copy restriction  check
+			if( disk.first.size == 'L' && disk.second > 1
+			|| ( disk.first.size == 'M' && disk.second > 2)
+			|| ( disk.first.size == 'S' && disk.second > 3)){
 				goto erase_thiscombo;
 			}
 		 }
@@ -139,16 +198,70 @@ void printCombinationsTable(vector<vector<disk>> combinations){
 	cout <<  endl;
      for (const auto& combination : combinations) {
          for (disk disk : combination) {
-             std::cout << "|" << setw(15) << disk.name << "[" << setw(2) << disk.command_value <<"] " <<  left;
+            std::cout << "|" << std::setw(21) << std::left << disk.name
+                      << "[" << std::setw(2) << std::left << disk.command_value << "] ";
          }
          cout << "|" << endl;
      }
 }
 
+void PrettyPrintCombinationsTable(vector<vector<disk>> combinations){
+	cout <<  endl;
+    for (const auto& combination : combinations) {
+		std::unordered_map<disk, int> disk_count;
+        for (disk disk : combination) { // fill up the map
+			disk_count[disk]++;
+        }
+		std::cout<< "| ";
+		for (const auto& disk : disk_count) { // copy restriction  check
+            std::cout <<  disk.second << "x " << std::setw(25) << std::left << disk.first.name << " | ";
+		}
+		cout<<endl;
+		disk_count = {};
+	}
+ }
+
+
+void help(){
+	cout<<"Run like this: ./diskbuild <army_name> <regiment_size>"<<endl;
+	cout<<"Possible army names are:"<<endl
+		<<"    - empire"<<endl
+		<<"    - elves"<<endl
+		<<"    - orcs"<<endl
+		<<"    - chaos"<<endl
+		<<"    - vc (vampire counts)"<<endl
+		<<"    - dwarves"<<endl;
+}
+
 int main(int argc, char* argv[]){
-    vector<vector<disk>> combinations = diskCombinations(vc_deck, 33);
+	if(argv[1]=="--help" || argv[1]=="help" || argv[1] == NULL){
+		help();
+		exit(-1);
+	}
+	char* deck_type = argv[1];
+
+	const std::vector<disk>* chosen_deck;
+    if (strcmp(deck_type,"empire") == 0)       chosen_deck = &empire_deck;
+    else if (strcmp(deck_type, "elves") == 0)  chosen_deck = &elves_deck;
+    else if (strcmp(deck_type, "orcs") == 0)   chosen_deck = &orc_deck;
+    else if (strcmp(deck_type, "chaos") == 0)  chosen_deck = &chaos_deck;
+    else if (strcmp(deck_type, "vc") == 0)     chosen_deck = &vc_deck;
+    else if (strcmp(deck_type, "dwarves") == 0)chosen_deck = &dwarves_deck;
+
+	// if(argv[1] == "empire") chosen_deck		= empire_deck;
+	// if(argv[1] == "elves")  chosen_deck		= elves_deck;
+	// if(argv[1] == "orcs")   chosen_deck		= orc_deck;
+	// if(argv[1] == "chaos")  chosen_deck		= chaos_deck;
+	// if(argv[1] == "vc")     chosen_deck		= vc_deck;
+	// if(argv[1] == "dwarves")chosen_deck	    = dwarves_deck;
+
+	int deck_size = atoi(argv[2]);
+
+    vector<vector<disk>> combinations;
 	cout << "this is the size of all combinations:" << combinations.size() << endl;
-	combinations = ValidDiskCombinations(vc_deck,33);
-	printCombinationsTable(combinations);
-	cout << "this is the size of all valid combinations:" << combinations.size() << endl;
+	combinations = ValidDiskCombinations(*chosen_deck,33);
+	// printCombinationsTable(combinations);
+	PrettyPrintCombinationsTable(combinations);
+
+	cout << "\nmax number of combinations is: " << combinations.size() << endl;
 }
