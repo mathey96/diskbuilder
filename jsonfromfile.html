@@ -13,6 +13,7 @@
   <button onclick="fetchjson()">getjson</button>
   <!--    <button onclick="createtable()">table</button> -->
   <button onclick="getData()">getData</button>
+  <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names..">
 
   <table id="userTable" border="1">
     <thead>
@@ -61,32 +62,32 @@ async function getData() {
 
 
 
-    function populateTable(data) {
-      const tableBody = document.querySelector('#userTable tbody');
-
-      data.forEach(item => {
-        const row = document.createElement('tr');
-
-        const cellId = document.createElement('td');
-        cellId.textContent = item.sum;
-        row.appendChild(cellId);
-
-        const cellName = document.createElement('td');
-        cellName.textContent = item.disk1;
-        row.appendChild(cellName);
-
-        const cellAge = document.createElement('td');
-        cellAge.textContent = item.disk2;
-        row.appendChild(cellAge);
-
-        // Create a cell for location if it exists in the item
-        const cellLocation = document.createElement('td');
-        cellLocation.textContent = item.location ? item.location : 'N/A'; // Default to 'N/A' if no location
-        row.appendChild(cellLocation);
-
-        tableBody.appendChild(row);
-      });
-    }
+//    function populateTable(data) {
+//      const tableBody = document.querySelector('#userTable tbody');
+//
+//      data.forEach(item => {
+//        const row = document.createElement('tr');
+//
+//        const cellId = document.createElement('td');
+//        cellId.textContent = item.sum;
+//        row.appendChild(cellId);
+//
+//        const cellName = document.createElement('td');
+//        cellName.textContent = item.disk1;
+//        row.appendChild(cellName);
+//
+//        const cellAge = document.createElement('td');
+//        cellAge.textContent = item.disk2;
+//        row.appendChild(cellAge);
+//
+//        // Create a cell for location if it exists in the item
+//        const cellLocation = document.createElement('td');
+//        cellLocation.textContent = item.location ? item.location : 'N/A'; // Default to 'N/A' if no location
+//        row.appendChild(cellLocation);
+//
+//        tableBody.appendChild(row);
+//      });
+//    }
 
     function createTableFromJSON(jsonData) {
       const table = document.querySelector("#userTable");
@@ -131,6 +132,29 @@ async function getData() {
             ];
             createTableFromJSON(jsonData);
    }
+
+    function search() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("userTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        console.log(td);
+        if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+        }
+    }
+    }
 
 
   </script>
