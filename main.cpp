@@ -277,6 +277,10 @@ void help(){
 #endif
 }
 
+
+#ifdef EMSCRIPTENBUILD
+EXTERN EMSCRIPTEN_KEEPALIVE
+#endif
 int main(int argc, char* argv[]){
 
 	if(argv[1] == NULL || argv[2] == NULL){
@@ -302,14 +306,58 @@ int main(int argc, char* argv[]){
 	}
 	int deck_size = atoi(argv[2]);
 
-    vector<vector<disk>> combinations;
-	cout << "this is the size of all combinations:" << combinations.size() << endl;
-	combinations = ValidDiskCombinations(*chosen_deck,deck_size);
-	// printCombinationsTable(combinations);
-	PrettyPrintCombinationsTable(combinations);
+    // vector<vector<disk>> combinations;
+	// cout << "this is the size of all combinations:" << combinations.size() << endl;
+	// combinations = ValidDiskCombinations(*chosen_deck,deck_size);
+	// // printCombinationsTable(combinations);
+	// PrettyPrintCombinationsTable(combinations);
 
-	cout << "\nmax number of combinations is: " << combinations.size() << endl;
+	// cout << "\nmax number of combinations is: " << combinations.size() << endl;
+	//PrintToJson(deck_size, 2);
 }
+
+#ifdef EMSCRIPTENBUILD
+EXTERN EMSCRIPTEN_KEEPALIVE
+void PrintToJson(int deck_size, int race) {
+	const vector<disk>* chosen_deck;
+    if      (race == 0)  help();
+    else if (race == 1)  chosen_deck = &empire_deck;
+    else if (race == 2)  chosen_deck = &elves_deck;
+    else if (race == 3)  chosen_deck = &orc_deck;
+    else if (race == 4)  chosen_deck = &chaos_deck;
+    else if (race == 5)  chosen_deck = &vc_deck;
+    else if (race == 6)  chosen_deck = &dwarves_deck;
+    vector<vector<disk>> combinations;
+	combinations = ValidDiskCombinations(*chosen_deck,deck_size);
+	int i = 0;
+	cout << "["<<endl;
+    for (auto it = combinations.begin();  it != combinations.end(); it++) {
+		unordered_map<disk, int> disk_count;
+		const auto& combination = *it;
+        for (disk disk : combination) { // fill up the map
+			disk_count[disk]++;
+        }
+		cout<< "{ \"sum\": " << combination.size() << ", ";
+		int i = 1;
+		for (auto it = disk_count.begin(); it != disk_count.end(); ++it) {
+			const auto& disk = it->second;
+			// Check if this is the last disk in the container
+			if (next(it) == disk_count.end()) {
+				// Handle the last disk differently, if needed
+				cout << "\"disk " << i << "\"" << ": \"" << disk << "x " << it->first.name << "\" ";
+			} else {
+				// Regular handling for other disks
+				cout << "\"disk " << i <<"\"" << ": \"" << disk << "x " << it->first.name << "\", ";
+			}
+			i++;
+		}
+	if(next(it) == combinations.end())  cout<<"}\n";
+	else cout<<"},"<<endl;
+	}
+	cout <<"]";
+	cout << endl << "this is the size of all combinations:" << combinations.size() << endl;
+}
+#endif
 
 
 #ifdef EMSCRIPTENBUILD
@@ -326,7 +374,7 @@ void PrintToBrowser(int deck_size, int race) {
     else if (race == 5)  chosen_deck = &vc_deck;
     else if (race == 6)  chosen_deck = &dwarves_deck;
 
-    vector<vector<disk>> combinations;
+    vector<vector<disk> > combinations;
 	cout << "this is the size of all combinations:" << combinations.size() << endl;
 	combinations = ValidDiskCombinations(*chosen_deck,deck_size);
 	// printCombinationsTable(combinations);
