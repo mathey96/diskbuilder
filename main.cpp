@@ -300,14 +300,6 @@ int main(int argc, char* argv[]){
 		cout<<"invalid race"<<endl;
 		return -1;
 	}
-
-	// if(argv[1] == "empire") chosen_deck		= empire_deck;
-	// if(argv[1] == "elves")  chosen_deck		= elves_deck;
-	// if(argv[1] == "orcs")   chosen_deck		= orc_deck;
-	// if(argv[1] == "chaos")  chosen_deck		= chaos_deck;
-	// if(argv[1] == "vc")     chosen_deck		= vc_deck;
-	// if(argv[1] == "dwarves")chosen_deck	    = dwarves_deck;
-
 	int deck_size = atoi(argv[2]);
 
     vector<vector<disk>> combinations;

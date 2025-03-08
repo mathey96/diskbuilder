@@ -1216,7 +1216,7 @@
 
 
     <button onclick="Clicked()">Submit</button>
-    <button onclick="clearOutput()">Clear Output</button>
+    <button onclick="gettext()">Clear Output</button>
     <script>
   // Function to clear the output element
   function clearOutput() {
@@ -1234,6 +1234,11 @@
         let Size = document.getElementById("regsize").value;
         _PrintToBrowser(Size, Race);
     }
+
+     function gettext(){
+        let text = document.getElementById("canvas").textContent;
+        console.log(text);  // Output: "Hello, this is some text!"
+     }
     </script>
 
     <!-- <script>

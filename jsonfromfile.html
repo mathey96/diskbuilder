@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Read JSON File</title>
+</head>
+<body>
+
+  <h2>Select a JSON file to read:</h2>
+  <input type="file" id="fileInput" accept=".json">
+  <pre id="output"></pre>
+  <button onclick="fetchjson()">getjson</button>
+  <!--    <button onclick="createtable()">table</button> -->
+  <button onclick="getData()">getData</button>
+
+  <table id="userTable" border="1">
+    <thead>
+      <tr>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+async function fetchjson() {
+  try {
+    const response = await fetch('./vc.json');
+    const data = await response.json();  // Automatically parses the JSON
+    return data;  // Return the parsed JSON data
+  } catch (error) {
+    console.error("Error reading file:", error);
+    return null;  // Or return some default value in case of an error
+  }
+}
+
+// Usage
+async function getData() {
+       const myData = await fetchjson();  // Wait for the fetchjson function to complete
+       console.log(myData);  // Use myData (which holds the fetched JSON)
+       if(myData === null){
+           console.log("jeiga");
+           return null;
+       }
+       //populateTable(myData);
+       createTableFromJSON(myData);
+}
+
+
+   //   function fetchjson() {
+   //    fetch('./file.json')
+   //        .then(response => response.json())  // Automatically parses the JSON
+   //        .then(data => {
+   //        const jsonData = data;
+   //        console.log(jsonData);
+   //        })
+   //        .catch(error => console.error("Error reading file:", error));
+   //    }
+
+
+
+    function populateTable(data) {
+      const tableBody = document.querySelector('#userTable tbody');
+
+      data.forEach(item => {
+        const row = document.createElement('tr');
+
+        const cellId = document.createElement('td');
+        cellId.textContent = item.sum;
+        row.appendChild(cellId);
+
+        const cellName = document.createElement('td');
+        cellName.textContent = item.disk1;
+        row.appendChild(cellName);
+
+        const cellAge = document.createElement('td');
+        cellAge.textContent = item.disk2;
+        row.appendChild(cellAge);
+
+        // Create a cell for location if it exists in the item
+        const cellLocation = document.createElement('td');
+        cellLocation.textContent = item.location ? item.location : 'N/A'; // Default to 'N/A' if no location
+        row.appendChild(cellLocation);
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    function createTableFromJSON(jsonData) {
+      const table = document.querySelector("#userTable");
+      const tableHead = table.querySelector("thead");
+      const tableBody = table.querySelector("tbody");
+
+      // Create headers (table columns) based on the keys of the first object in the JSON
+      const headers = Object.keys(jsonData[0]);
+      const headerRow = document.createElement("tr");
+
+      // Loop through the keys and create table headers
+      headers.forEach(header => {
+        const th = document.createElement("th");
+        th.textContent = header.replace(/_/g, " ").toUpperCase();  // Optional: format header text
+        headerRow.appendChild(th);
+      });
+
+      // Append headers to the table
+      tableHead.appendChild(headerRow);
+
+      // Create rows for each object in the JSON data
+      jsonData.forEach(item => {
+        const row = document.createElement("tr");
+
+        // Loop through each header and create a cell for each key
+        headers.forEach(header => {
+          const cell = document.createElement("td");
+          // Insert value or an empty string if key is missing in this object
+          cell.textContent = item[header] || ''; 
+          row.appendChild(cell);
+        });
+
+        // Append the row to the table body
+        tableBody.appendChild(row);
+      });
+    }
+
+   function createtable(){
+            const jsonData = [
+            { "first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "matija":"car"},
+            { "first_name": "Jane", "last_name": "Smith", "email": "jane.smith@example.com" }
+            ];
+            createTableFromJSON(jsonData);
+   }
+
+
+  </script>
+
+</body>
+</html>
