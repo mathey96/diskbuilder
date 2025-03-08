@@ -135,26 +135,32 @@ async function getData() {
 
     function search() {
     // Declare variables
-    var input, filter, table, tr, td, i, txtValue;
+    var input, filter, table, tr, td, i, txtValue, rowText;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
     table = document.getElementById("userTable");
-    tr = table.getElementsByTagName("tr");
+    tr = table.querySelectorAll("tbody tr");
 
     // Loop through all table rows, and hide those who don't match the search query
     for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[1];
-        console.log(td);
-        if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        td = tr[i].getElementsByTagName("td");
+        rowText = ''; // Initialize an empty string to hold text for this row
+
+        // Loop through each cell in the row
+        for (var j = 0; j < td.length; j++) {
+            if (td[j]) {
+                rowText += td[j].textContent || td[j].innerText; // Append text of each cell to rowText
+            }
+        }
+
+        // If any cell in the row contains the search query, display the row, otherwise hide it
+        if (rowText.toUpperCase().indexOf(filter) > -1) {
             tr[i].style.display = "";
         } else {
             tr[i].style.display = "none";
         }
-        }
     }
-    }
+}
 
 
   </script>
