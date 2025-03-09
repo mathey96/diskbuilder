@@ -290,7 +290,7 @@ const char* PrintToJson(int deck_size, int race) {
     else if (race == 6)  chosen_deck = &dwarves_deck;
     vector<vector<disk>> combinations;
 	combinations = ValidDiskCombinations(*chosen_deck,deck_size);
-	static std::string json_result = "";
+	std::string json_result = "";
 	int i = 0;
 	json_result = json_result + "[" + "\n";
     for (auto it = combinations.begin();  it != combinations.end(); it++) {
@@ -328,9 +328,9 @@ const char* PrintToJson(int deck_size, int race) {
 	return json_result.c_str();
 }
 
-#ifdef EMSCRIPTENBUILD
-EXTERN EMSCRIPTEN_KEEPALIVE
-#endif
+//#ifdef EMSCRIPTENBUILD
+//EXTERN EMSCRIPTEN_KEEPALIVE
+//#endif
 int main(int argc, char* argv[]){
 
 	if(argv[1] == NULL || argv[2] == NULL){
