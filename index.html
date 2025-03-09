@@ -1217,8 +1217,18 @@
     <textarea id="output" rows="8"></textarea>
 
     <button onclick="Clicked()">Click</button>
+  <table id="userTable" border="1">
+    <thead>
+      <tr>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+
     <script type='text/javascript'>
-    function Clicked(){
+function Clicked(){
         //clearOutput();
         //let Race = document.getElementById("race").value;
         //let Size = document.getElementById("regsize").value;
@@ -1233,14 +1243,53 @@
 
         // Read the string from WebAssembly memory
         const str = UTF8ToString(stringPointer, stringLength);
-         //_PrintToBrowser(5,2)
+        //_PrintToBrowser(5,2)
         JSON.stringify(str);
-         console.log(str)
-         stringPointer = stringPointerLast;
-         const obj = JSON.parse(str);
-         console.log(obj)
-         console.log(stringLength)
-     }
+        stringPointer = stringPointerLast;
+        var obj = JSON.parse(str);
+        createTableFromJSON(obj);
+}
+
+function createTableFromJSON(jsonData) {
+      const table = document.querySelector("#userTable");
+      const tableHead = table.querySelector("thead");
+      const tableBody = table.querySelector("tbody");
+
+      // Clear existing table content
+      tableHead.innerHTML = "";
+      tableBody.innerHTML = "";
+
+      // Create headers (table columns) based on the keys of the first object in the JSON
+      const headers = Object.keys(jsonData[0]);
+      const headerRow = document.createElement("tr");
+
+      // Loop through the keys and create table headers
+      headers.forEach(header => {
+        const th = document.createElement("th");
+        th.textContent = header.replace(/_/g, " ").toUpperCase();  // Optional: format header text
+        headerRow.appendChild(th);
+      });
+
+      // Append headers to the table
+      tableHead.appendChild(headerRow);
+
+      // Create rows for each object in the JSON data
+      jsonData.forEach(item => {
+        const row = document.createElement("tr");
+
+        // Loop through each header and create a cell for each key
+        headers.forEach(header => {
+          const cell = document.createElement("td");
+          // Insert value or an empty string if key is missing in this object
+          cell.textContent = item[header] || '';
+          row.appendChild(cell);
+        });
+
+        // Append the row to the table body
+        tableBody.appendChild(row);
+      });
+}
+
 
      var statusElement = document.getElementById('status');
      var progressElement = document.getElementById('progress');
