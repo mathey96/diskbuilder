@@ -4,32 +4,117 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style>
-      body {
+      #body {
         font-family: arial;
         margin: 0;
         padding: none;
       }
 
+     #header{
+         width: 100%;
+         height: 100px;
+         margin: 0 auto;
+         text-align: center;
+         margin-top: 10px;
+    }
 
-      #output {
-        width: 100%;
-        height: 200px;
-        margin: 0 auto;
-        margin-top: 10px;
-        border-left: 0px;
-        border-right: 0px;
-        padding-left: 0px;
-        padding-right: 0px;
-        display: block;
-        background-color: black;
-        color: white;
-        font-family: 'Lucida Console', Monaco, monospace;
-        outline: none;
-      }
+     .container {
+         display: flex;
+         flex-direction: column; /* Stack items vertically */
+         justify-content: center; /* Center horizontally */
+         align-items: center; /* Center vertically */
+         height: 10vh; /* Full viewport height */
+     }
+
+        .input-group {
+            display: flex;
+            flex-direction: row;
+            gap: 10px; /* Space between inputs */
+        }
+
+        .label-and-button {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Space between inputs */
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 10px; /* Space between inputs and button */
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: row;
+            padding: none;
+        }
+
+    #about{
+         text-align: center;
+     }
+
+   #races{
+       margin: 0 auto;
+       text-align: center;
+    }
+
+input, select {
+    height: 40px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+    #regsize{
+         position: relative;
+     }
+
+     #generator{
+         position: relative;
+         float: center;
+    }
+
+     #myInput1{
+         position: relative;
+         top: 100px;
+         margin: 20px auto;
+         float: center;
+         height: 25px;
+     }
+
+    #myInput2{
+        position: relative;
+        top: 100px;
+        margin: 20px auto;
+        float: center;
+        height: 25px;
+    }
+
+    #myInput3{
+        position: relative;
+        top: 100px;
+        margin: 20px auto;
+        float: center;
+        height: 25px;
+    }
+    #myInput4{
+        position: relative;
+        top: 100px;
+        margin: 20px auto;
+        float: center;
+        height: 25px;
+    }
+
      #userTable{
          width: 100%;
          margin: 0 auto;
-         margin-top: 10px;
+         margin-top: 100px;
          border-left: 0px;
          border-right: 0px;
          padding-left: 0px;
@@ -39,19 +124,55 @@
      }
     </style>
   </head>
-  <body>
-    <div class="emscripten">
-        <progress value="0" max="100" id="progress" hidden=1></progress>
-    </div>
 
 
     <!--  textarea id="output" rows="8"></textarea> -->
-    <button onclick="Clicked()">Click</button>
-    <input type="text" id="myInput1" onkeyup="search()" placeholder="Search for names..">
-    <input type="text" id="myInput2" onkeyup="search()" placeholder="Search for names..">
-    <input type="text" id="myInput3" onkeyup="search()" placeholder="Search for names..">
-    <input type="text" id="myInput4" onkeyup="search()" placeholder="Search for names..">
-  <table id="userTable" border="1">
+
+<h2 id="header" > DiskBuilder </h2>
+<div class="container">
+    <p id="about">
+        <br>
+        <br>
+        Press button to generate your army.
+        <br>
+        <br>
+        then go flip some disks FTW
+        <br>
+        <br>
+    </p>
+<div class="input-group">
+
+    <div class="label-and-button"
+    <label for="races">Race:</label>
+    <select name="races" id="races">
+    <option value="empire">Empire</option>
+    <option value="elves">Elves</option>
+    <option value="dwarves">Dwarves</option>
+    <option value="woodelves">Wood Elves</option>
+    <option value="chaos">Chaos</option>
+    <option value="orcs">Orcs</option>
+    <option value="vc">Vampire Counts</option>
+    <option value="skaven">Skaven</option>
+    </select>
+    </div>
+    <!--  input type="number" id="race" placeholder="Enter your race"><br><br>
+-->
+    <div class="label-and-button"
+    <label for="regsize">Regiment Size:</label>
+    <input type="number" id="regsize" placeholder="Enter regiment size"><br><br>
+    </div>
+</div>
+    <button onclick="GenerateArmy()" id="generator">Generate Army</button>
+</div>
+
+<div class="filter-group">
+    <input type="text" id="myInput1" onkeyup="search()" placeholder="Filter 1 ">
+    <input type="text" id="myInput2" onkeyup="search()" placeholder="Filter 2">
+    <input type="text" id="myInput3" onkeyup="search()" placeholder="Filter 3">
+    <input type="text" id="myInput4" onkeyup="search()" placeholder="Filter 4">
+</div>
+
+<table id="userTable" border="1">
     <thead>
       <tr>
       </tr>
@@ -99,10 +220,12 @@ function search() {
     }
 }
 
-function Clicked(){
+function GenerateArmy(){
         //clearOutput();
-        //let Race = document.getElementById("race").value;
-        //let Size = document.getElementById("regsize").value;
+        let Race = document.getElementById("races").value;
+        let Size = document.getElementById("regsize").value;
+        console.log(Race);
+        console.log(Size);
         stringPointer = _PrintToJson(34,1);
         stringPointerLast = stringPointer;
 
