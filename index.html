@@ -1217,6 +1217,10 @@
     <textarea id="output" rows="8"></textarea>
 
     <button onclick="Clicked()">Click</button>
+    <input type="text" id="myInput1" onkeyup="search()" placeholder="Search for names..">
+    <input type="text" id="myInput2" onkeyup="search()" placeholder="Search for names..">
+    <input type="text" id="myInput3" onkeyup="search()" placeholder="Search for names..">
+    <input type="text" id="myInput4" onkeyup="search()" placeholder="Search for names..">
   <table id="userTable" border="1">
     <thead>
       <tr>
@@ -1228,11 +1232,48 @@
   </table>
 
     <script type='text/javascript'>
+
+function search() {
+    // Declare variables
+    var input1, input2, input3, filter, table, tr, td, i, txtValue, rowText;
+    input1 = document.getElementById("myInput1");
+    input2 = document.getElementById("myInput2");
+    input3 = document.getElementById("myInput3");
+    input4 = document.getElementById("myInput4");
+    filter1 = input1.value.toUpperCase();
+    filter2 = input2.value.toUpperCase();
+    filter3 = input3.value.toUpperCase();
+    filter4 = input4.value.toUpperCase();
+
+    table = document.getElementById("userTable");
+    tr = table.querySelectorAll("tbody tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+        rowText = ''; // Initialize an empty string to hold text for this row
+
+        // Loop through each cell in the row
+        for (var j = 0; j < td.length; j++) {
+            if (td[j]) {
+                rowText += td[j].textContent || td[j].innerText; // Append text of each cell to rowText
+            }
+        }
+
+         // If any cell in the row contains the search query, display the row, otherwise hide it
+         if (rowText.toUpperCase().indexOf(filter1) > -1 && rowText.toUpperCase().indexOf(filter2) > -1 && rowText.toUpperCase().indexOf(filter3) > -1 && rowText.toUpperCase().indexOf(filter4) > -1) {
+             tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
+
 function Clicked(){
         //clearOutput();
         //let Race = document.getElementById("race").value;
         //let Size = document.getElementById("regsize").value;
-        stringPointer = _PrintToJson(10,1);
+        stringPointer = _PrintToJson(34,1);
         stringPointerLast = stringPointer;
 
         // Get the length of the string (you might need to know this, or you can calculate it)

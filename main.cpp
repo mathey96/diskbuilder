@@ -103,7 +103,7 @@ const std::vector<disk> orc_deck = { // vc one standard set deck
 	{"Goblin Doom Diver"   ,4  ,'S' ,nonelite ,3},
 	{"Night Goblins"	   ,4  ,'S' ,nonelite ,3},
 	{"Orc Boyz"			   ,6  ,'S' ,nonelite ,3},
-	{"Stone Fangz Shaman"  ,7  ,'S' ,nonelite ,7}
+	{"Stone Fangz Shaman"  ,7  ,'S' ,nonelite ,1}
 };
 
 const std::vector<disk> vc_deck = { // vc one standard set deck
