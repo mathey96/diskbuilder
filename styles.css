@@ -1,4 +1,4 @@
-      #body {
+     #body {
         font-family: arial;
         margin: 0;
         padding: none;
@@ -10,7 +10,7 @@
          margin: 0 auto;
          text-align: center;
          margin-top: 10px;
-    }
+     }
 
      .container {
          display: flex;
@@ -20,52 +20,52 @@
          height: 10vh; /* Full viewport height */
      }
 
-        .input-group {
+     .input-group {
             display: flex;
             flex-direction: row;
             gap: 10px; /* Space between inputs */
         }
 
-        .label-and-button {
+     .label-and-button {
             display: flex;
             flex-direction: column;
             gap: 10px; /* Space between inputs */
         }
 
-        input, button {
+     input, button {
             padding: 10px;
             font-size: 16px;
         }
 
-        button {
+     button {
             margin-top: 10px; /* Space between inputs and button */
         }
 
-        .filter-group {
+     .filter-group {
             display: flex;
             flex-direction: row;
             padding: none;
         }
 
-    #about{
+     #about{
          text-align: center;
      }
 
-   #races{
+     #races{
        margin: 0 auto;
        text-align: center;
     }
 
-input, select {
-    height: 40px;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    vertical-align: middle;
-}
+     input, select {
+         height: 40px;
+         padding: 8px;
+         font-size: 16px;
+         border: 1px solid #ccc;
+         box-sizing: border-box;
+         vertical-align: middle;
+     }
 
-    #regsize{
+     #regsize{
          position: relative;
      }
 
@@ -82,7 +82,7 @@ input, select {
          height: 25px;
      }
 
-    #myInput2{
+     #myInput2{
         position: relative;
         top: 100px;
         margin: 20px auto;
@@ -90,14 +90,15 @@ input, select {
         height: 25px;
     }
 
-    #myInput3{
+     #myInput3{
         position: relative;
         top: 100px;
         margin: 20px auto;
         float: center;
         height: 25px;
     }
-    #myInput4{
+
+     #myInput4{
         position: relative;
         top: 100px;
         margin: 20px auto;
@@ -106,13 +107,35 @@ input, select {
     }
 
      #userTable{
-         width: 100%;
-         margin: 0 auto;
-         margin-top: 100px;
-         border-left: 0px;
-         border-right: 0px;
-         padding-left: 0px;
-         padding-right: 0px;
-         font-family: 'Lucida Console', Monaco, monospace;
-         outline: none;
+              width: 100%;
+              margin: 0 auto;
+              margin-top: 100px;
+              border-left: 0px;
+              border-right: 0px;
+              padding-left: 0px;
+              padding-right: 0px;
+              font-family: 'Lucida Console', Monaco, monospace;
+              outline: none;
+              border: 1px solid black; /* Adds border to cells */
+              border-collapse: collapse;
+              font-size: 18px;
+     }
+
+     #userTable {
+       width: 100%;
+       border: 1px solid #ddd;
+       font-size: 18px;
+     }
+
+     #userTable th, #userTable td {
+       text-align: left;
+       padding: 12px;
+     }
+
+     #userTable tr {
+       border-bottom: 1px solid #ddd;
+     }
+
+     #userTable tr.header, #userTable tr:hover {
+       background-color: #f1f1f1;
      }
