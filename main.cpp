@@ -259,39 +259,53 @@ void help(){
 	cout<<"Run like this: ./diskbuild <army_name> <regiment_size>"<<endl;
 	cout<<"Possible army names are:"<<endl
 #ifndef EMSCRIPTENBUILD
-		<<"    - empire"<<endl
-		<<"    - elves"<<endl
-		<<"    - orcs"<<endl
-		<<"    - chaos"<<endl
-		<<"    - vc (vampire counts)"<<endl
-		<<"    - dwarves"<<endl;
+		<<"    empire"<<endl
+		<<"    elves"<<endl
+		<<"    dwarves"<<endl
+		<<"    woodelves"<<endl
+		<<"    chaos"<<endl
+		<<"    orcs"<<endl
+		<<"    vc"<<endl
+		<<"    skaven"<<endl;
 #endif
 #ifdef EMSCRIPTENBUILD
 		<<"    1 - empire"<<endl
 		<<"    2 - elves"<<endl
-		<<"    3 - orcs"<<endl
-		<<"    4 - chaos"<<endl
-		<<"    5 - vc (vampire counts)"<<endl
-		<<"    6 - dwarves"<<endl;
+		<<"    3 - dwarves"<<endl
+		<<"    4 - wood elves"<<endl
+		<<"    5 - chaos"<<endl
+		<<"    6 - orcs"<<endl
+		<<"    7 - vc"<<endl
+		<<"    8 - skaven"<<endl;
 #endif
 }
 
+static std::string json_result = "";
 #ifdef EMSCRIPTENBUILD
 EXTERN EMSCRIPTEN_KEEPALIVE
 #endif
 const char* PrintToJson(int deck_size, int race) {
+
+	json_result.erase(); // clear previous result
 	const vector<disk>* chosen_deck;
     if      (race == 0)  help();
     else if (race == 1)  chosen_deck = &empire_deck;
     else if (race == 2)  chosen_deck = &elves_deck;
-    else if (race == 3)  chosen_deck = &orc_deck;
-    else if (race == 4)  chosen_deck = &chaos_deck;
-    else if (race == 5)  chosen_deck = &vc_deck;
-    else if (race == 6)  chosen_deck = &dwarves_deck;
+    else if (race == 3)  chosen_deck = &dwarves_deck;
+    else if (race == 4)  chosen_deck = &wood_deck;
+    else if (race == 5)  chosen_deck = &chaos_deck;
+    else if (race == 6)  chosen_deck = &orc_deck;
+    else if (race == 7)  chosen_deck = &vc_deck;
+    else if (race == 8)  chosen_deck = &skaven_deck;
+	else {
+	    cout<<"invalid race\n";
+		exit(-1);
+	}
+
     vector<vector<disk>> combinations;
 	combinations = ValidDiskCombinations(*chosen_deck,deck_size);
-	std::string json_result = "";
 	int i = 0;
+
 	json_result = json_result + "[" + "\n";
     for (auto it = combinations.begin();  it != combinations.end(); it++) {
 		unordered_map<disk, int> disk_count;
@@ -331,6 +345,7 @@ const char* PrintToJson(int deck_size, int race) {
 //#ifdef EMSCRIPTENBUILD
 //EXTERN EMSCRIPTEN_KEEPALIVE
 //#endif
+
 int main(int argc, char* argv[]){
 
 	if(argv[1] == NULL || argv[2] == NULL){
@@ -344,26 +359,27 @@ int main(int argc, char* argv[]){
 	char* deck_type = argv[1];
 
 	const std::vector<disk>* chosen_deck;
-    if      (strcmp(deck_type,"empire") == 0)  chosen_deck = &empire_deck;
-    else if (strcmp(deck_type, "elves") == 0)  chosen_deck = &elves_deck;
-    else if (strcmp(deck_type, "orcs")  == 0)  chosen_deck = &orc_deck;
-    else if (strcmp(deck_type, "chaos") == 0)  chosen_deck = &chaos_deck;
-    else if (strcmp(deck_type, "vc")    == 0)  chosen_deck = &vc_deck;
-    else if (strcmp(deck_type, "dwarves") == 0)chosen_deck = &dwarves_deck;
+    if      (strcmp(deck_type,"empire")     == 0) chosen_deck = &empire_deck;
+    else if (strcmp(deck_type, "elves")     == 0) chosen_deck = &elves_deck;
+    else if (strcmp(deck_type, "dwarves")   == 0) chosen_deck = &dwarves_deck;
+    else if (strcmp(deck_type, "woodelves") == 0) chosen_deck = &dwarves_deck;
+    else if (strcmp(deck_type, "chaos")     == 0) chosen_deck = &chaos_deck;
+    else if (strcmp(deck_type, "orcs")      == 0) chosen_deck = &orc_deck;
+    else if (strcmp(deck_type, "vc")        == 0) chosen_deck = &vc_deck;
+    else if (strcmp(deck_type, "skaven")    == 0) chosen_deck = &skaven_deck;
 	else{
 		cout<<"invalid race"<<endl;
 		return -1;
 	}
 	int deck_size = atoi(argv[2]);
 
-    // vector<vector<disk>> combinations;
-	// cout << "this is the size of all combinations:" << combinations.size() << endl;
-	// combinations = ValidDiskCombinations(*chosen_deck,deck_size);
-	// // printCombinationsTable(combinations);
-	// PrettyPrintCombinationsTable(combinations);
+     vector<vector<disk>> combinations;
+	 cout << "this is the size of all combinations:" << combinations.size() << endl;
+	 combinations = ValidDiskCombinations(*chosen_deck,deck_size);
+	 // printCombinationsTable(combinations);
+	 PrettyPrintCombinationsTable(combinations);
 
 	// cout << "\nmax number of combinations is: " << combinations.size() << endl;
-	PrintToJson(deck_size, 2);
 }
 
 
@@ -377,10 +393,12 @@ void PrintToBrowser(int deck_size, int race) {
     if      (race == 0)  help();
     else if (race == 1)  chosen_deck = &empire_deck;
     else if (race == 2)  chosen_deck = &elves_deck;
-    else if (race == 3)  chosen_deck = &orc_deck;
-    else if (race == 4)  chosen_deck = &chaos_deck;
-    else if (race == 5)  chosen_deck = &vc_deck;
-    else if (race == 6)  chosen_deck = &dwarves_deck;
+    else if (race == 3)  chosen_deck = &dwarves_deck;
+    else if (race == 4)  chosen_deck = &wood_deck;
+    else if (race == 5)  chosen_deck = &chaos_deck;
+    else if (race == 6)  chosen_deck = &orc_deck;
+    else if (race == 7)  chosen_deck = &vc_deck;
+    else if (race == 8)  chosen_deck = &skaven_deck;
 
     vector<vector<disk> > combinations;
 	cout << "this is the size of all combinations:" << combinations.size() << endl;

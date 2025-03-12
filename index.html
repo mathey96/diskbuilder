@@ -221,27 +221,52 @@ function search() {
 }
 
 function GenerateArmy(){
-        //clearOutput();
-        let Race = document.getElementById("races").value;
-        let Size = document.getElementById("regsize").value;
-        console.log(Race);
-        console.log(Size);
-        stringPointer = _PrintToJson(34,1);
-        stringPointerLast = stringPointer;
+    //clearOutput();
+    let Race = document.getElementById("races").value;
+    let ArmySize = document.getElementById("regsize").value;
+    let RaceChoice = -1;
+    switch(Race){
+        case "empire":
+            RaceChoice = 1;
+            break;
+        case "elves":
+            RaceChoice = 2;
+            break;
+        case "dwarves":
+            RaceChoice = 3;
+            break;
+        case "woodelves":
+            RaceChoice = 4;
+            break;
+        case "chaos": RaceChoice = 5;
+            break;
+        case "orcs": RaceChoice = 6;
+            break;
+        case "vc": RaceChoice = 7;
+            break;
+        case "skaven": RaceChoice = 8;
+            break;
+        default:
+             throw "invalid race";
+     }
+     let stringPointer = _PrintToJson(ArmySize, RaceChoice);
+     //stringPointerLast = stringPointer;
 
-        // Get the length of the string (you might need to know this, or you can calculate it)
-        let stringLength = 0;  // For example, the length of "Hello from C++!"
-             while(HEAPU8[stringPointer + stringLength] !== 0){
-                 stringLength++;
-         }
+     // Get the length of the string (you might need to know this, or you can calculate it)
+     let stringLength = 0;  // For example, the length of "Hello from C++!"
+          while(HEAPU8[stringPointer + stringLength] !== 0){
+              stringLength++;
+      }
 
-        // Read the string from WebAssembly memory
-        const str = UTF8ToString(stringPointer, stringLength);
-        //_PrintToBrowser(5,2)
-        JSON.stringify(str);
-        stringPointer = stringPointerLast;
-        var obj = JSON.parse(str);
-        createTableFromJSON(obj);
+     // Read the string from WebAssembly memory
+     const str = UTF8ToString(stringPointer, stringLength);
+     JSON.stringify(str);
+     console.log(RaceChoice);
+     console.log(ArmySize);
+     console.log(str);
+     //stringPointer = stringPointerLast;
+     let obj = JSON.parse(str);
+     createTableFromJSON(obj);
 }
 
 function createTableFromJSON(jsonData) {
