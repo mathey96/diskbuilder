@@ -3,130 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style>
-      #body {
-        font-family: arial;
-        margin: 0;
-        padding: none;
-      }
-
-     #header{
-         width: 100%;
-         height: 100px;
-         margin: 0 auto;
-         text-align: center;
-         margin-top: 10px;
-    }
-
-     .container {
-         display: flex;
-         flex-direction: column; /* Stack items vertically */
-         justify-content: center; /* Center horizontally */
-         align-items: center; /* Center vertically */
-         height: 10vh; /* Full viewport height */
-     }
-
-        .input-group {
-            display: flex;
-            flex-direction: row;
-            gap: 10px; /* Space between inputs */
-        }
-
-        .label-and-button {
-            display: flex;
-            flex-direction: column;
-            gap: 10px; /* Space between inputs */
-        }
-
-        input, button {
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        button {
-            margin-top: 10px; /* Space between inputs and button */
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: row;
-            padding: none;
-        }
-
-    #about{
-         text-align: center;
-     }
-
-   #races{
-       margin: 0 auto;
-       text-align: center;
-    }
-
-input, select {
-    height: 40px;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    vertical-align: middle;
-}
-
-    #regsize{
-         position: relative;
-     }
-
-     #generator{
-         position: relative;
-         float: center;
-    }
-
-     #myInput1{
-         position: relative;
-         top: 100px;
-         margin: 20px auto;
-         float: center;
-         height: 25px;
-     }
-
-    #myInput2{
-        position: relative;
-        top: 100px;
-        margin: 20px auto;
-        float: center;
-        height: 25px;
-    }
-
-    #myInput3{
-        position: relative;
-        top: 100px;
-        margin: 20px auto;
-        float: center;
-        height: 25px;
-    }
-    #myInput4{
-        position: relative;
-        top: 100px;
-        margin: 20px auto;
-        float: center;
-        height: 25px;
-    }
-
-     #userTable{
-         width: 100%;
-         margin: 0 auto;
-         margin-top: 100px;
-         border-left: 0px;
-         border-right: 0px;
-         padding-left: 0px;
-         padding-right: 0px;
-         font-family: 'Lucida Console', Monaco, monospace;
-         outline: none;
-     }
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
-
-
-    <!--  textarea id="output" rows="8"></textarea> -->
 
 <h2 id="header" > DiskBuilder </h2>
 <div class="container">
@@ -185,8 +63,8 @@ input, select {
     <script type='text/javascript'>
 
 function search() {
-    // Declare variables
-    var input1, input2, input3, filter, table, tr, td, i, txtValue, rowText;
+    console.log("poziv f-je");
+    var input1, input2, input3, input4, filter1, filter2, filter3, filter4, table, tr, td, i, txtValue, rowText;
     input1 = document.getElementById("myInput1");
     input2 = document.getElementById("myInput2");
     input3 = document.getElementById("myInput3");
@@ -212,11 +90,28 @@ function search() {
         }
 
          // If any cell in the row contains the search query, display the row, otherwise hide it
-         if (rowText.toUpperCase().indexOf(filter1) > -1 && rowText.toUpperCase().indexOf(filter2) > -1 && rowText.toUpperCase().indexOf(filter3) > -1 && rowText.toUpperCase().indexOf(filter4) > -1) {
-             tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
+    if (rowText.toUpperCase().indexOf(filter1) > -1 && rowText.toUpperCase().indexOf(filter2) > -1 && rowText.toUpperCase().indexOf(filter3) > -1 && rowText.toUpperCase().indexOf(filter4) > -1) {
+        tr[i].style.display = "";
+
+         // find cells that contain filter text
+        for (let rowcell = 0; rowcell < tr[i].cells.length; rowcell++) {
+            let cell = tr[i].cells[rowcell]; // Get the cell
+            let cellText = " " + cell.textContent || cell.innerText; // Get text inside cell - and prepend space - hacky solution for string searching
+            console.log("tekst u cellu je",cellText);
+            if((cellText.toUpperCase().indexOf(filter1) > 0) ||
+               (cellText.toUpperCase().indexOf(filter2) > 0) ||
+               (cellText.toUpperCase().indexOf(filter3) > 0) ||
+               (cellText.toUpperCase().indexOf(filter4) > 0)){
+                    cell.style.backgroundColor = "lightgreen"; // Highlight matching cell
+                    cell.style.color = "black"; // Change text color for better visibility
+            }
+            else{
+                cell.style.backgroundColor = "white"; // Highlight matching cell
+            }
         }
+    } else {
+        tr[i].style.display = "none";
+    }
     }
 }
 
@@ -252,7 +147,7 @@ function GenerateArmy(){
      let stringPointer = _PrintToJson(ArmySize, RaceChoice);
 
      // Get the length of the string (you might need to know this, or you can calculate it)
-     let stringLength = 0;  // For example, the length of "Hello from C++!"
+     let stringLength = 0;
           while(HEAPU8[stringPointer + stringLength] !== 0){
               stringLength++;
       }
@@ -260,7 +155,6 @@ function GenerateArmy(){
      // Read the string from WebAssembly memory
      const str = UTF8ToString(stringPointer, stringLength);
      JSON.stringify(str);
-     console.log(str);
      if(str === "[\n]"){ // check if nothing is returned;
          console.log("empty json");
          return;
