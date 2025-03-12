@@ -250,7 +250,6 @@ function GenerateArmy(){
              throw "invalid race";
      }
      let stringPointer = _PrintToJson(ArmySize, RaceChoice);
-     //stringPointerLast = stringPointer;
 
      // Get the length of the string (you might need to know this, or you can calculate it)
      let stringLength = 0;  // For example, the length of "Hello from C++!"
@@ -261,10 +260,11 @@ function GenerateArmy(){
      // Read the string from WebAssembly memory
      const str = UTF8ToString(stringPointer, stringLength);
      JSON.stringify(str);
-     console.log(RaceChoice);
-     console.log(ArmySize);
      console.log(str);
-     //stringPointer = stringPointerLast;
+     if(str === "[\n]"){ // check if nothing is returned;
+         console.log("empty json");
+         return;
+    }
      let obj = JSON.parse(str);
      createTableFromJSON(obj);
 }
@@ -351,7 +351,6 @@ function createTableFromJSON(jsonData) {
       window.onerror = function(event) {
         // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
         Module.setStatus('Exception thrown, see JavaScript console');
-        spinnerElement.style.display = 'none';
         Module.setStatus = function(text) {
           if (text) Module.printErr('[post-exception status] ' + text);
         };
