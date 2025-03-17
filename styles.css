@@ -17,7 +17,7 @@
          flex-direction: column; /* Stack items vertically */
          justify-content: center; /* Center horizontally */
          align-items: center; /* Center vertically */
-         height: 10vh; /* Full viewport height */
+         height: 30vh; /* Full viewport height */
      }
 
      .input-group {
@@ -73,6 +73,7 @@
          position: relative;
          float: center;
     }
+
 
      #myInput1{
          position: relative;

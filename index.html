@@ -3,16 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="styles.css">
+    <link type="text/css" rel="stylesheet" href="styles.css">
   </head>
 
 <h2 id="header" > DiskBuilder </h2>
 <div class="container">
     <p id="about">
         <br>
-        <br>
         Press button to generate your army.
-        <br>
         <br>
         then go flip some disks FTW
         <br>
@@ -39,15 +37,17 @@
     <label for="regsize">Regiment Size:</label>
     <input type="number" id="regsize" placeholder="Enter regiment size"><br><br>
     </div>
+
 </div>
     <button onclick="GenerateArmy()" id="generator">Generate Army</button>
+    <button onclick="clearentries()" id="entries">Clear entries</button>
 </div>
 
 <div class="filter-group">
-    <input type="text" id="myInput1" onkeyup="search()" placeholder="Filter 1 ">
-    <input type="text" id="myInput2" onkeyup="search()" placeholder="Filter 2">
-    <input type="text" id="myInput3" onkeyup="search()" placeholder="Filter 3">
-    <input type="text" id="myInput4" onkeyup="search()" placeholder="Filter 4">
+    <input type="text" id="myInput1" onkeyup="search()" onfocus="clearinput(this)" placeholder="Filter 1 ">
+    <input type="text" id="myInput2" onkeyup="search()" onfocus="clearinput(this)" placeholder="Filter 2">
+    <input type="text" id="myInput3" onkeyup="search()" onfocus="clearinput(this)" placeholder="Filter 3">
+    <input type="text" id="myInput4" onkeyup="search()" onfocus="clearinput(this)" placeholder="Filter 4">
 </div>
 
 <table id="userTable" >
@@ -61,6 +61,10 @@
   </table>
 
     <script type='text/javascript'>
+
+function clearinput(input){
+    input.value = ''; // Clears the input field
+}
 
 function search() {
     console.log("poziv f-je");
@@ -112,6 +116,19 @@ function search() {
     } else {
         tr[i].style.display = "none";
     }
+    }
+}
+
+function clearentries() {
+    document.getElementById("myInput1").value ='';
+    document.getElementById("myInput2").value ='';
+    document.getElementById("myInput3").value ='';
+    document.getElementById("myInput4").value ='';
+//    document.getElementById("userTable").style.display = "table";
+    table = document.getElementById("userTable");
+    tr = table.querySelectorAll("tbody tr");
+    for (i = 0; i < tr.length; i++) {
+        tr[i].style.display = "";
     }
 }
 
