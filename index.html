@@ -188,8 +188,9 @@ function createTableFromJSON(jsonData) {
       tableHead.innerHTML = "";
       tableBody.innerHTML = "";
 
-      // Create headers (table columns) based on the keys of the first object in the JSON
-      const headers = Object.keys(jsonData[0]);
+
+      const headers = [...new Set(jsonData.flatMap(obj => Object.keys(obj)))];
+
       const headerRow = document.createElement("tr");
 
       // Loop through the keys and create table headers
