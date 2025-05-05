@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destination Page</title>
+  <script>
+    window.onload = function() {
+      // Retrieve the stored row data from localStorage
+      const rowData = JSON.parse(localStorage.getItem("selectedRowData"));
+      console.log(rowData);
+
+      if (rowData) {
+        // Create a new table dynamically
+        const table = document.createElement("table");
+        table.border = "1";
+
+        // Create table headers
+        const headerRow = document.createElement("tr");
+        const headers = ["ID", "Name", "Age"];
+        headers.forEach(header => {
+          const th = document.createElement("th");
+          th.textContent = header;
+          headerRow.appendChild(th);
+        });
+        table.appendChild(headerRow);
+
+        // Create a row for the clicked data
+        const row = document.createElement("tr");
+        rowData.forEach(cellData => {
+          const cell = document.createElement("td");
+          cell.textContent = cellData;
+          row.appendChild(cell);
+        });
+        table.appendChild(row);
+
+        // Append the table to the body of the page
+        document.body.appendChild(table);
+      } else {
+        document.body.innerHTML = "<h2>No data found!</h2>";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Destination Page</h1>
+</body>
+</html>

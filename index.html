@@ -62,6 +62,8 @@
     <script type='text/javascript'>
 
 
+var SelectedRows = [];
+
 function handleRowClick(event) {
       // Check if the clicked element is a table row (not a header or button)
       const row = event.target.closest("tr");
@@ -74,7 +76,24 @@ function handleRowClick(event) {
           rowData.push(cell.textContent.trim());
         });
 
-        console.log("Row clicked:", rowData);
+      // console.log("Row clicked:", rowData);
+      let savedData = JSON.parse(localStorage.getItem("selectedRowData")) || [];
+
+      // Append the new row's data to the saved data array
+      SelectedRows.push(rowData);
+
+      // Store the updated array back into localStorage
+      localStorage.setItem("selectedRowData", JSON.stringify(SelectedRows));
+      console.log("alldata:",SelectedRows);
+
+        //let arrayOfArrays = [[1, 2, 3], [4, 5, 6]];
+        //let newArray = [7, 8];
+
+        //let result = arrayOfArrays.concat([newArray]);
+        //console.log(arrayOfArrays);
+
+        // Redirect to the second page
+        //window.location.href = "saved_armies.html";
       }
 }
 
