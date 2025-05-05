@@ -61,6 +61,33 @@
 
     <script type='text/javascript'>
 
+
+function handleRowClick(event) {
+      // Check if the clicked element is a table row (not a header or button)
+      const row = event.target.closest("tr");
+      if (row && row.parentNode.tagName === "TBODY") {
+        // Get the row's data (for example, all cell content)
+        const rowData = [];
+        const cells = row.querySelectorAll("td");
+
+        cells.forEach(cell => {
+          rowData.push(cell.textContent.trim());
+        });
+
+        console.log("Row clicked:", rowData);
+      }
+}
+
+function addTableClickListener() {
+      const table = document.querySelector("#userTable");
+
+      // Attach a click event listener to the table
+      table.addEventListener("click", handleRowClick);
+}
+
+    // Wait until the DOM is fully loaded before adding the event listener
+document.addEventListener("DOMContentLoaded", addTableClickListener);
+
 function clearinput(input){
     input.value = ''; // Clears the input field
 }
