@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Destination Page</title>
+
+  <button onclick="clear_table()" id="cleartable">clear table</button>
   <script>
 
    // finds largest subarray in json
@@ -20,10 +22,11 @@
 
     function clear_table(){
         const table = document.getElementById("table");
-        //const tableHead = table.querySelector("thead");
+        const tableHead = table.querySelector("thead");
         const tableBody = table.querySelector("tbody");
-        //tableHead.innerHTML = "";
+        tableHead.innerHTML = "";
         tableBody.innerHTML = "";
+        localStorage.removeItem("selectedRowData");
    }
 
 
@@ -80,7 +83,7 @@ window.onload = function() {
 
         document.body.appendChild(table);
     } else {
-        document.body.innerHTML = "<h2>No data found!</h2>";
+        document.body.innerHTML = "<h2>No data found! Go Back and click on the rows of possible armies to save them to the draft </h2>";
     }
 }
   </script>
