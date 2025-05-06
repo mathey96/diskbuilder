@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Destination Page</title>
 
-  <button onclick="clear_table()" id="cleartable">clear table</button>
+  <button onclick="clear_table()" id="cleartable">Clear table and go back to building</button>
+  <button onclick="window.history.back()">Go back to diskbuilding</button>
   <script>
 
    // finds largest subarray in json
@@ -27,9 +28,12 @@
         tableHead.innerHTML = "";
         tableBody.innerHTML = "";
         localStorage.removeItem("selectedRowData");
+        var SelectedRows = JSON.parse(localStorage.getItem('SelectedRows'));
+        SelectedRows = null;
+        window.location.href = 'index.html'; // Path to your HTML page
    }
 
-
+window.SelectedRows = null;
 window.onload = function() {
     // Retrieve the stored row data from localStorage
     const JSONArray = JSON.parse(localStorage.getItem("selectedRowData"));

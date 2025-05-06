@@ -40,6 +40,7 @@
 </div>
     <button onclick="GenerateArmy()" id="generator">Generate Army</button>
     <button onclick="clearentries()" id="entries">Clear entries</button>
+    <button onclick="window.location.href='saved_armies.html';">Go to drafted regiments</button>
 </div>
 
 <div class="filter-group">
@@ -111,8 +112,13 @@ function clearinput(input){
     input.value = ''; // Clears the input field
 }
 
+window.onload = function() {
+    SelectedRows = [];
+    localStorage.removeItem("selectedRowData");
+    localStorage.removeItem("SelectedRows");
+}
+
 function search() {
-    console.log("poziv f-je");
     var input1, input2, input3, input4, filter1, filter2, filter3, filter4, table, tr, td, i, txtValue, rowText;
     input1 = document.getElementById("myInput1");
     input2 = document.getElementById("myInput2");
