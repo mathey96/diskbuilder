@@ -36,6 +36,8 @@
 
 window.SelectedRows = null;
 window.onload = function() {
+
+    document.getElementById('cleartable').style.visibility = 'show';
     // Retrieve the stored row data from localStorage
     const JSONArray = JSON.parse(localStorage.getItem("selectedRowData"));
 
@@ -88,7 +90,10 @@ window.onload = function() {
 
         document.body.appendChild(table);
     } else {
-        document.body.innerHTML = "<h2>No data found! Go Back and click on the rows of possible armies to save them to the draft </h2>";
+        const newPara = document.createElement('p');
+        newPara.textContent = 'No data found! Go Back and click on the rows of possible armies to save them to the draft ';
+        document.body.appendChild(newPara);
+        document.getElementById('cleartable').style.visibility = 'hidden';
     }
 }
   </script>
