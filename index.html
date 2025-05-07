@@ -175,12 +175,22 @@ function clearentries() {
     document.getElementById("myInput2").value ='';
     document.getElementById("myInput3").value ='';
     document.getElementById("myInput4").value ='';
-//    document.getElementById("userTable").style.display = "table";
     table = document.getElementById("userTable");
     tr = table.querySelectorAll("tbody tr");
-    for (i = 0; i < tr.length; i++) {
+
+    for (i = 0; i < tr.length; i++) { // loop through table rows
+        td = tr[i].getElementsByTagName("td");
+
         tr[i].style.display = "";
-    }
+        // Loop through each cell in the row
+        for (var j = 0; j < td.length; j++) {
+            if (td[j]) {
+              td[j].style.backgroundColor = "white"; // This removes the inline style
+              td[j].style.backgroundColor = ""; // This removes the inline style
+              console.log("cell: ", td[j].textContent);
+            }
+        }
+     }
 }
 
 function GenerateArmy(){
