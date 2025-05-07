@@ -65,6 +65,14 @@
 
 var SelectedRows = [];
 
+function isValueUnique(jsonData, valueToCheck) {
+    for (i = 0; i < jsonData.length; i++){
+          if(JSON.stringify(jsonData[i]) == JSON.stringify(valueToCheck))
+              return false;
+    }
+    return true;
+}
+
 function handleRowClick(event) {
       // Check if the clicked element is a table row (not a header or button)
       const row = event.target.closest("tr");
@@ -77,24 +85,17 @@ function handleRowClick(event) {
           rowData.push(cell.textContent.trim());
         });
 
-      // console.log("Row clicked:", rowData);
       let savedData = JSON.parse(localStorage.getItem("selectedRowData")) || [];
 
       // Append the new row's data to the saved data array
-      SelectedRows.push(rowData);
+      if(isValueUnique(SelectedRows, rowData)){
+        SelectedRows.push(rowData);
+      }
+      //console.log(JSON.stringify(savedData));
+
 
       // Store the updated array back into localStorage
       localStorage.setItem("selectedRowData", JSON.stringify(SelectedRows));
-      console.log("alldata:",SelectedRows);
-
-        //let arrayOfArrays = [[1, 2, 3], [4, 5, 6]];
-        //let newArray = [7, 8];
-
-        //let result = arrayOfArrays.concat([newArray]);
-        //console.log(arrayOfArrays);
-
-        // Redirect to the second page
-        //window.location.href = "saved_armies.html";
       }
 }
 
@@ -302,7 +303,7 @@ function createTableFromJSON(jsonData) {
             if (element) {
               element.value += text + "\n";
               element.scrollTop = element.scrollHeight; // focus on bottom
-            }
+      }
           };
         })(),
         setStatus: function(text) {
