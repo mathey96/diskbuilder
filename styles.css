@@ -137,21 +137,21 @@
               font-size: 18px;
      }
 
-     #userTable {
+     #userTable, #table {
        width: 100%;
        border: 1px solid #ddd;
        font-size: 18px;
      }
 
-     #userTable th, #userTable td {
+     #userTable th, #userTable td,  #table th, #table td {
        text-align: left;
        padding: 12px;
      }
 
-     #userTable tr {
+     #userTable tr, #table tr {
        border-bottom: 1px solid #ddd;
      }
 
-     #userTable tr.header, #userTable tr:hover {
+     #userTable tr.header, #userTable tr:hover, #table tr.header, #table tr:hover {
        background-color: #f1f1f1;
      }
