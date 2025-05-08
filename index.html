@@ -9,7 +9,10 @@
 <h1 id="header" > DiskBuilder </h1>
 <div class="container">
     <p id="about">
-        Press button to generate your army.
+        generate your army.
+        <br>
+        click rows to save to draft.
+        <br>
         <br>
         then go flip some disks FTW
         <br>
@@ -193,6 +196,33 @@ function clearentries() {
         }
      }
 }
+
+function animateScrollTo(element, targetPosition, duration) {
+    const startPosition = element.scrollTop;
+    const distance = targetPosition - startPosition;
+    let startTime = null;
+
+    function scrollStep(currentTime) {
+        if (!startTime) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1); // Normalize to range [0, 1]
+        const currentScroll = startPosition + distance * progress;
+        element.scrollTop = currentScroll;
+
+        if (progress < 1) {
+            requestAnimationFrame(scrollStep); // Continue animation
+        }
+    }
+
+    // Start the animation
+    requestAnimationFrame(scrollStep);
+}
+
+document.getElementById("generator").addEventListener("click", function() {
+    const targetPosition = document.getElementById("myInput1").offsetTop;
+    // Animate scroll to the target position (using document.documentElement or document.body)
+    animateScrollTo(document.documentElement, targetPosition - 20, 250);
+});
 
 function GenerateArmy(){
     //clearOutput();
