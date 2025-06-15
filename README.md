@@ -19,6 +19,11 @@ but with a few twists and limitations
 While app is written in C++, it can be deployed to web using emscripten's WASM magic, ready to be used by your local gang of four.  
 
 
+## demo
+![](https://github.com/mathey96/diskbuilder/blob/master/demo.gif)
+
+https://github.com/user-attachments/assets/2219709b-8b1c-444d-9b92-7827554799c4
+
 ## hosting
 get your local python server serving a html page like this:  
 
