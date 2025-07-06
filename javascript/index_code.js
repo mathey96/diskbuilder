@@ -26,6 +26,7 @@ function handleRowClick(event) {
       // Append the new row's data to the saved data array
       if(isValueUnique(SelectedRows, rowData)){
         SelectedRows.push(rowData);
+        row.style.backgroundColor = "lightblue"; // Highlight matching cell
       }
       //console.log(JSON.stringify(savedData));
 
